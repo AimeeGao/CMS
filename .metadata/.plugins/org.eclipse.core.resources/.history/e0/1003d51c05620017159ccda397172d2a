@@ -1,0 +1,18 @@
+<?php
+$host = 'localhost';
+$user_name = 'root';
+$password = 1346;
+$conn = mysql_connect($host,$user_name,$password);
+if(!$conn){
+	die('连接数据库失败：'.mysql_error());
+}
+// 若连接成功则选择数据库
+mysql_selet_db('test'); // 选择数据库
+$sql = 'select id,name,city,gender from users';
+$result = mysql_query($sql); // 获取查询结果
+if($result){
+	echo 'SQL语句：'.$sql.'<br/>已经成功执行！';
+	$num = mysql_num_rows($result); // 调用函数mysql_num_rows()获得SELECT语句查询结果的行数
+	echo '<br/>该SQL语句查询到<b>'.$num.'</b>行数据';
+}
+mysql_close($conn);

@@ -1,0 +1,82 @@
+<?php include 'includes/admin_header.php';?>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+<?php include 'includes/admin_navigation.php';?>
+
+        <div id="page-wrapper">
+
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            Welcome to admin
+                            <small>Author</small>
+                        </h1>
+                        <table class="table table-bordered table-hover">
+                        	<thead>
+                        		<tr>
+                        			<th>Id</th>
+                        			<th>Author</th>
+                        			<th>Title</th>
+                        			<th>Category</th>
+                        			<th>Status</th>
+                        			<th>Image</th>
+                        			<th>Tags</th>
+                        			<th>Comments</th>
+                        			<th>Date</th>
+                        		</tr>
+                        	</thead>
+                        	<tbody>
+                        	<?php 
+                        	$query = "SELECT * FROM posts";
+                        	$result = mysqli_query($connection, $query);
+                        	while($row =mysqli_fetch_assoc($result)){
+                        		$posts_id = $row['posts_id'];
+                        		$posts_author = $row['posts_author'];
+                        		$posts_title = $row['posts_title'];
+                        		$posts_category_id = $row['posts_category_id'];
+                        		$posts_status = $row['posts_status'];
+                        		$posts_image = $row['posts_image'];
+                        		$posts_tags = $row['posts_tags'];
+                        		$posts_comment_count = $row['posts_comment_count'];
+                        		$posts_date = $row['posts_date'];
+                        	}
+                        	
+                        	echo '<tr>';
+                        	
+                        	echo '</tr>';
+                        	
+                        	?>
+                        	
+                        		<tr>
+                        			<td>10</td>
+                        			<td>Aimee</td>
+                        			<td>Bootstrap</td>
+                        			<td>Category</td>
+                        			<td>Status</td>
+                        			<td>Image</td>
+                        			<td>Tags</td>
+                        			<td>Comments</td>
+                        			<td>Date</td>
+                        		</tr>
+                        	</tbody>
+                    
+                        </table>
+                       
+                    </div>
+                </div>
+                <!-- /.row -->
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- /#page-wrapper -->
+   </div>
+  <?php include 'includes/admin_footer.php'?>

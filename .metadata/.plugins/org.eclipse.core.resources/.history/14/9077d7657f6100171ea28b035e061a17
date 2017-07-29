@@ -1,0 +1,7 @@
+<?php
+$conn = mysql_connect('localhost','root','1348');
+if (!$conn)
+{
+	die('fail'.mysql_error());
+}
+echo 'success';

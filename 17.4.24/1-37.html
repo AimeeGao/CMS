@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>1-37.html - 使用javascript验证HTML表单数据</title>
+</head>
+<style type="text/css">
+    h1{
+        text-align: center;
+    }
+</style>
+<body>
+<script language="JavaScript" src="1-381.js"></script>
+<h1>使用javascript验证HTML表单提交</h1>
+
+<form id="fdata" name="fdata" method="post" action="" onsubmit="return checkForm()">
+    <table width="476" height="154" border="1" align="center" cellpadding="1" cellspacing="0">
+        <tr>
+            <td width="254">
+                <div align="right">请只输入数字（长度小于10）：</div>
+            </td>
+            <td width="212">
+                <label>
+                    <input type="text" name="num"/>
+                </label>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <div align="right">请只输入英文字母：</div>
+            </td>
+            <td>
+                <label>
+                    <input type="text" name="al"/>
+                </label>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <div align="right">请做选择：</div>
+            </td>
+            <td>
+                <label>
+                    <select name="lan">
+                        <option value="">请做选择</option>
+                        <option value="english">英语</option>
+                        <option value="frensh">法语</option>
+                        <option value="spanish">西班牙语</option>
+                    </select>
+                </label>
+            </td>
+        </tr>
+
+        <tr>
+            <td height="38" colspan="2">  <!--colspan代表单元格可横跨的列数-->
+                <label>
+                    <input type="submit" name="Submit" value="提交"/> <!--name属性是为了将数据提交到后台时，后台能够获取到数据值使用-->
+                </label>
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

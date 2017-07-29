@@ -1,0 +1,3 @@
+<?php
+$conn = mysql_connect('localhost','root','1346');
+echo 'success';

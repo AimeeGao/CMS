@@ -1,0 +1,13 @@
+<?php
+setcookie("testcookie","ilovephp");
+echo "cookie's value:".$_COOKIE['testcookie'];
+
+setcookie("mycookie['three']","cookiethree"); // 设置mycookie['three']
+setcookie("mycookie['two']","cookietwo"); // 设置mycookie['two']
+setcookie("mycookie['one']","cookieone"); // 设置mycookie['one']
+// 刷新页面后，将所有cookie显示出来
+if(isset($_COOKIE["mycokkie"])){
+	foreach ($_COOKIE['mycokkie'] as $name => $value){
+		echo "$name : $value <br/>";
+	}
+}

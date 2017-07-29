@@ -1,0 +1,22 @@
+<?php
+class Person
+{
+	private $name; // 私有成员变量$name
+	public function set_name($name) // 成员函数set_name()
+	{
+		$this->name = $name;
+	}
+	public function get_name()  // 成员函数get_name()
+	{
+		echo "My name is".$this->name."<br/>";
+	}
+	
+}
+
+$boy = new Person;  // Person类的实例$boy
+$boy->set_name("Harry Pottor"); 
+$boy->get_name();
+
+$girl = new Person;  // Person类的实例 $ girl
+$girl->set_name("Emma");
+$girl->get_name();

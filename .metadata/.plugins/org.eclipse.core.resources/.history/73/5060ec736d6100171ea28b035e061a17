@@ -1,0 +1,2 @@
+<?php
+$conn = mysql_connet('localhost','root','user_pass');

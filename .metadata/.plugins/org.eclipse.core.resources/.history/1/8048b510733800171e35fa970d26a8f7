@@ -1,0 +1,29 @@
+<?php
+// 检测用户是否提交数据
+if(isset($_POST['year'])){
+	// 使用用户提交的数据作为年数据
+	$year = $_POST['year'];
+}else{
+		// 使用当前日期的年作为年数据
+		$year = date("Y");
+	}
+if(isset($_POST['month'])){
+		$month = $_POST['month'];
+	}else{
+	 	// 使用当前日期的月作为月数据
+	 	$month = date("m");
+	}
+//初始化数据
+$date =01; // 初始化年数据
+$day =01; // 初始化日数据
+$off = 0; 
+// 检测年数据是否正确
+if($year<0 or $year>9999){
+	// 如果年数不正确，显示错误信息，关返回上一页
+	echo "<script> alert('年份应在1-9999之间.'); nistory.go(-1); </script>";
+	exit();
+}
+if($month < 0 or $month > 12){
+	// 如果月数据不正确，显示错误信息，关返回上一页
+	echo "<script> alert('月份应在1-12之间'); history.go(-1); </script>";
+}

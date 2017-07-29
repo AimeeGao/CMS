@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="GB2312"?>
+<books>
+<book>
+<title>Learning PHP5</title>
+<author>David</author>
+<publisher>White Water Press</publisher>
+<price>29.90</price>
+</book>
+
+<book>
+<title>Learning XML</title>
+<author>Jeffson</author>
+<publisher>White Water Press</publisher>
+<price>50.79</price>
+</book>
+
+<book>
+<title>Using PERL</title>
+<author>Lucas</author>
+<publisher>White Water Press</publisher>
+<price>17.00</price>
+</book>
+
+<book> 
+<title>Windows Networks</title>
+<author>Paul</author>
+<publisher>White Water Press</publisher>
+<price>32.99</price>
+</book>
+
+<book>
+<title>Fly Leaf</title>
+<author>Jenny</author>
+<publisher>White Water Press</publisher>
+<price>19.50</price>
+</book>
+</books>

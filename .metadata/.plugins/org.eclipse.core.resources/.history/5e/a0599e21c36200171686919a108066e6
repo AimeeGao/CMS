@@ -1,0 +1,25 @@
+<?php
+$host = 'localhost';
+$user_name = 'root';
+$password = 1346;
+
+// 通过POST方法传入的表单数据
+$name = $_POST['user_name'];
+$city = $_POST['city'];
+
+if(empty($name) || trim($name) == ''){ // 判断用户名是否为空或者空格
+ 	echo '请填写用户名！<a href="14-9.php">返回</a>';
+	exit;
+}
+
+$conn = mysql_connect($host,$user_name,$password);
+if(!$conn){
+	die('数据库连接失败：'.mysql_error());
+}
+mysql_select_db('test');
+
+// 表users中的created_time字段使用通过MySQL函数NOW()取得的系统时间
+$sql = "insert into users set id=7,name='".$name."',city = '".$city."'";
+mysql_query($sql) OR die("<br/> ERROR:<b>".mysql_error()."</b><br/>SQL:".$sql);
+mysql_close($conn);
+echo '数据插入成功，打开<a href="14-7.php">查看数据</a>';

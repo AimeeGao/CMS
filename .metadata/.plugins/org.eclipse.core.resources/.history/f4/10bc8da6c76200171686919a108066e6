@@ -1,0 +1,29 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>用来提交用户信息的HTML页面</title>
+</head>
+<body>
+<b>提交用户信息</b>
+<form name="form" method="post" action="14-10.php">
+	<table border="0" cellpadding="0" cellspacing="2" width="75%">
+		<tr>
+			<td width="24%" height="33">用户名：</td>
+			<td width="76%"><input type="text" name="user_name" size=20/></td>
+		</tr>
+		<tr>
+			<td>来自城市：</td>
+			<td>
+				<select name="city">
+					<option value="Beijing">北京</option>
+					<option value="London">伦敦</option>
+					<option value="NewYork">纽约</option>
+					<option value="Paris">巴黎</option>
+					<option value="Rome">罗马</option>
+				</select>
+			</td>
+		</tr>
+	</table>
+</form>
+</body>
+</html>

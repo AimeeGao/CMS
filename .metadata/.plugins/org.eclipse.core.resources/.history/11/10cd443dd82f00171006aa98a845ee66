@@ -1,0 +1,6 @@
+<?php
+// 将文件移至服务器的根目录的upload目录下，upload目录要事先建立好
+$upload_path = $_SERVER['DOCUMENT_ROOT']."/upload/";
+$dest_file = $upload_path.basename($_FILES['myfile']['name']);
+echo $_SERVER['DOCUMENT_ROOT'];
+// 将临时文件移至目标文件夹

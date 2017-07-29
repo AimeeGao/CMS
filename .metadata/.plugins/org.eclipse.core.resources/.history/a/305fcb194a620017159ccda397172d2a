@@ -1,0 +1,28 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>14-9.html</title>
+</head>
+<body>
+<b>提交用户信息</b>
+<form name="form" method="post" action="14-10.php">
+	<table width="75%" border="0" cellspacing="2" cellpadding="0">
+		<tr>
+			<td width="24%" height="29">用户名：</td>
+			<td width="76%"><input name="user_name" type="text" id="user_name" size="20"></td>
+		</tr>
+		<tr>
+			<td height="25">来自城市：</td>
+			<td>
+				<select name>
+				
+				
+				
+				</select>
+			
+			</td>
+		</tr>
+	</table>
+</form>
+</body>
+</html>

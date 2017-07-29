@@ -1,0 +1,55 @@
+<?php
+$host = 'localhost';
+$user_name = 'root';
+$password = 1346;
+$conn = mysql_connect($host,$user_name,$password);
+if(!$conn){
+	die('连接数据库失败：'.mysql_error());
+}
+mysql_select_db('test');
+$sql = 'select id,name,city from users';
+$result = mysql_query($sql) OR die("<br/>ERROR:<b>".mysql_error()."</b><br/><br/>有问题的SQL：<br/>".$sql);
+?>
+<html>
+<head>
+	<meta charset='UTF-8'/>
+	<title>在HTML文档中嵌入PHP程序显示表中数据</title>
+</head>
+<body>
+<form>
+	<table width="75%" border="0" cellpadding="0" cellspacing="1" bgcolor="#7B7B84">
+		<tr bgcolor="#8BBCC7">
+			<td height="33"><div align="center"><strong>用户ID</strong></div></td>
+			<td><div align="center"><strong>用户名称</strong></div></td>
+			<td><div align="center"><strong>来自城市</strong></div></td>
+		</tr>
+	
+	<?php 
+	
+	if($num = mysql_num_rows($result)){
+		while($row = mysql_fetch_array($result,MYSQL_ASSOC)){
+	?>
+		<tr bgcolor="#FFFFFF">
+		<td height="22" align="right"><?php echo $row['id'];?>&nbsp;</td>
+		<td height="22"> &nbsp; <?php echo $row['name']?> &nbsp;</td>
+		<td height="22"> &nbsp; <?php echo $row['city']?> &nbsp;</td>
+		
+		</tr>
+	<?php 
+	
+		}
+		
+	}
+	mysql_close($conn);
+	
+	
+	
+	?>
+	
+	
+	</table>
+</form>
+</body>
+</html>
+
+

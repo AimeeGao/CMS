@@ -1,0 +1,59 @@
+<!Doctype html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>js验证HTML表单数据</title>
+</head>
+<body>
+<h1>使用js验证html表单提交数据</h1>
+<br/>
+<br/>
+<script language="JavaScript" src="1-38.js"></script>
+<form id="fdata" name="fdata" method="post" action="" onsubmit="return checkForm()">
+    <table width="476" hegiht="154" border="1" align="center" cellpadding="1" cellspacing="0">
+        <tr>
+            <td width="254">
+                <div align="right">请只输入数字（长度小于10）：</div>
+            </td>
+            <td width="212">
+                <label for="">
+                    <input type="text" name="num"/>
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div align="right">请只输入英文字母：</div>
+            </td>
+            <td>
+                <label for="">
+                    <input type="text" name="al"/>
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div align="right">请做选择</div>
+            </td>
+            <td>
+                <label for="">
+                    <select name="lan" id="">
+                        <option value="">请做选择</option>
+                        <option value="english">英语</option>
+                        <option value="french">法语</option>
+                        <option value="panish">西班牙语</option>
+                    </select>
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td height="38" colspan="2">
+                <label for="">
+                    <input type="submit" name="Submit" value="提交"/>
+                </label>
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

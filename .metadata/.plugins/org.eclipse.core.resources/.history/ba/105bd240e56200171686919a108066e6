@@ -1,0 +1,8 @@
+<?php
+$host = 'localhost';
+$user_name = 'root';
+$password = 1346;
+
+// 通过POST方法传入的表单数据
+$name = $_POST['user_name'];
+$city = $_POST['city'];

@@ -1,0 +1,110 @@
+<?php
+// php中对URL、HTTP的处理
+// 对URL的处理主要涉及 URL的编码、解码、对URL进行处理
+/* （1）. URL地址分析
+ *  有时需将一个URL作为一个整体，通过另一个URL传递给一个程序，即将一个URL作为参数传递给另外一个URL
+ *  因为被传递URL里可能带有查询字符串，为避免和原URL的参数冲突，需要将被传递的URL进行处理，即做编码
+ *  对于中文参数值的传递也应该进行URL编码
+ * */
+/* （2）. 对URL进行编码
+ * string urlencode(string $str);
+ * 函数urlencode()接受一个字符串参数作为输入，返回值也是一个字符串，返回值字符串中的所有非字母和数字字符变成一个百分号（%）和一个两位的十六进制数
+ * & 会变成 %26 空格会被转换成一个 + 号 但该函数不对- _ .转换
+ * */
+ $url = "http://localhost.com/?user=abcd&code=1234"; // 定义url变量
+ $decode_url = urlencode($url); // 对url进行编码
+ echo "编码前，URL为：".$url."<br/>";
+ echo "<br/>";
+ echo "编码后，URL为：".$decode_url."<br/>";
+ echo "<br/>";
+ /* （3）. 对 URL进行解码
+  * string urldecode(string $str);
+  * urldecode()的参数是一个字符串，此函数将编码后诸如%##形式的字符串解码
+  * */
+ 
+ $url_encode= "http%3A%2F%2Flocalhost.com%2F%3Fuser%3Dabcd%26code%3D1234"; // 编码后的url
+ $url_str = urldecode($url_encode);
+ echo "解码前，URL为：".$url_encode."<br/>";
+ echo "解码后，URL为:".$url_str."<br/>";
+ 
+ /* （4）. 对URL地址进行分析
+  * 一个有效的URL地址由多个部分组成 协议部分、主机（IP地址）部分、端口号
+  * 有时在程序中需要使用URL地址的某些部分，单纯通过字符串处理函数也可以获取这些部分，但效率低出错高
+  * parse_url()，专门用来分析一个有效的URL地址，该函数可获取URL地址的各个部分
+  * parse_url( $url);
+  * 该函数的参数是一个URL地址字符串，返回值是一个关联数组，数组中存储了URL地址的各个部分
+  * 关联数组的每个索引对应URL地址的每个部分
+  * scheme:协议
+  * host:主机IP地址或域名
+  * port:端口号
+  * user：用户名
+  * pass：用户密码
+  * path：访问路径
+  * query：查询参数字符串
+  * fragment:参数片段
+  * */
+ $url = "http://www.somesite.com:8000/php/code?id=100&cid=900"; // url变量
+ $ret_arr = parse_url($url); // 分析指定的url
+ echo "要分析的地址：<br/>".$url;
+ echo '<hr>';
+ echo "<pre>";
+ echo "分析结果如下：<br/>";
+ print_r($ret_arr);
+ echo "</pre>";
+ 
+ // parse_url()不能用来验证URl地址是否合法，而只是分解URL地址的各个部分 对于不完整的URL,parse_url()会尝试正确解析；对于不合格的URL，函数返回false
+
+ // 2. HTTP应用
+ /* （1）.生成一个HTTP头
+  * 服务器在将HTMl文档传送至客户端之前，会先发送一些数据的说明信息到浏览器，最后发送HTML文档数据，这些说明信息被称作头标
+  * 函数header()会将HTML文档的表头以HTTP协议发送至浏览器，告诉浏览器改如何处理这个页面
+  * header (string $str_header);
+  * 参数$str_header是一个字符串，用来接受要发送的标头
+  * php中函数header()最常见的用法就是重定向 将用户的访问重定向到Php官网
+  * */
+
+//  header("location: http://www.php.net"); // 重定向页面
+//  exit;
+
+ // 打开该网页时，网页自动跳转到header规定的网址
+ // 若限制某一页面不能被用户访问，可用代码设置页面状态为404
+ // 单独在一个页面里设置
+ 
+//  header('HTTP/1.1 404 Not Found');  // 找不到网页的提示信息
+//  header("status: 404 Not Found");
+
+ // 通过函数header()获取页面最新内容
+ // 告诉浏览器此页面的过期事件（国际标准时间表示），只要是已经过去的日期即可
+/* header("Expires: Mon,26 Jul 1970 05:00:00 GMT");
+ // 告诉浏览器此页面的最后更新日期（国际标准时间表示）也就是当天，目的就是强迫浏览器获取最新内容
+ header("Last-Modified:".gmdate("D,d M Y H:i:s")."GMT");
+ header("Cache-Control: no-cache, must-revalidate"); // 告诉浏览器不要使用缓存
+ // 与以前的服务器兼容，兼容HTTP1.0协议
+ header("Pragma:no-cache");
+ header("Content-type: application/file"); // 输出MIME类型
+ header("Content-Length:2850");            // 文件长度
+ header("Accept-Ranges:bytes");
+ header("Contant_Disposition:attachment; filename=afilename"); // 默认时文件保存对话框中的文件名称
+*/
+ // 以上代码也存在问题
+ 
+ /* 在PHP中，向浏览器传送HTML文档前，需要传完所有头标。即函数header()必须在有任何实际输出之前调用，包括输出普通的HTML、空行或PhP代码
+  * */
+ /*	<html>
+ 	<?php 
+ 	header('Location: http://www.example.com);
+ 	?>
+ 	错误代码示范，因为在调用header()之前已输出了HTML标记<html>
+  * */
+ /* （2）. 获取HTTP头信息
+  * 通过HTTP预定义变量$_SERVER可获取页面的HTTP头信息 该变量是一个关联数组，每个索引对应一个HTTP头信息
+  * HTTP_HOST:HTTP主机
+  * SERVER_SIGNATURE: 服务器签名
+  * SERVER_NAME:服务器名称
+  * SERVER_ADDR:服务器地址
+  * SERVER_PROT:服务器端口
+  * SERVER_PROTOCAL:服务器协议
+  * */
+ echo "<pre>";
+ print_r($_SERVER); // 输出由$_SERVER保存的头信息数组
+ 

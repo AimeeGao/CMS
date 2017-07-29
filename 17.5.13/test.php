@@ -1,0 +1,136 @@
+<?php
+// 用php处理日期和时间
+// 1. 获取格式化的日期和事件
+/* （1）. 函数date()可以得到一个格式化的日期和时间
+ *  string date(string $format [, int timestamp]);
+ *  函数date()有两个参数，第1个参数$format是一个格式化的字符串; 第二个参数可选，他表示UNIX的时间戳。
+ *  该函数将时间戳$timestamp按字符串$format的格式返回，若没有提供第二个参数$timestamp，函数默认使用本地当前时间
+ *  即将本地当前时间格式化输出。
+ *  调用函数date()的代码：
+ *  echo date('Y-m-d');
+ *  这段代码输出的结果类似于2012-12-01.Y-m-d就是格式化的字符串，他告诉函数date()按4位数字的年份，两位数字的月份，和两位数字的天数格式化日期和时间
+ *  因为没有传入第二个参数，该函数将会格式化本地的当前时间
+ * */
+echo "<b>格式化当前时间</b><br/>";
+echo date('Y-m-j');  // 按年月日格式输出日期
+echo '<br/>';
+echo '<br/>';
+echo "今天是一年中的第".date('z')."天"; //获取一年中的第几天
+echo '<br/>';
+echo '<br/>';
+echo date('M jS, Y l');
+echo '<br/>';
+echo '<br/>';
+echo '程序执行时间'.date('H:i:s'); // 获取当前的时间
+echo '<br/>';
+echo '<br/>';
+
+// 2. 处理UNIX时间戳
+/* 大多数UNIX系统用一个32-bit的整数存储当前时间和日期，这个整数是从1970年1月1日零时（按GMT）开始的秒数，
+ * 这个秒数即称为UNIX时间戳。 即时间戳的单位为秒
+ * 若希望将一个日期和时间转换成一个UNIX时间戳，可使用PHP提供的函数mktime()。
+ * int mktime(int $hour, int $minute, int $second, int $month, int day, int $year);
+ * 函数mktime()根据所给参数返回UNIX时间戳，若参数非法，返回false 函数mktime()的参数分别为， 小时数， 分钟数， 秒数（0-59），月份，天数，年数
+ * 年数可以是两位或四位数字，若是两位数字，0-69对英语2000-2069，70-99对应于1970-1999
+ * 该函数的参数从右向左省略，省略的参数将以本地日期和时间代替
+ * 如返回当前日期和时间的UNIX时间戳
+ * $cur_timestamp = mktime();
+ * 返回当前年份1月1日的UNIX时间戳
+ * mktime(0,0,0,1,1);
+ * mktime()函数也可做简单的日期计算 使用mktime()计算30天后同一时间的时间戳
+ * mktime(0，0，0，$month,$day+30,$year);
+ * */
+echo mktime(0,0,0,1,1);
+echo '<br/>';
+echo mktime(0,0,0,1,31,17);
+echo '<br/>';
+
+echo "时间戳".mktime(0,0,0,12,31,2008)."对应的日期是："; // 换算时间戳
+echo '<br/>';
+echo date("M-d-y",mktime(0,0,0,12,31,2008)); // 按指定格式输出日期
+echo '<hr/>';
+echo '<br/>';
+
+$day =1;
+echo "时间戳".mktime(0,0,0,7,$day+38,2012)."对应的日期是：</br>"; // 日期计算后的时间戳
+echo date("Y-m-d",mktime(0,0,0,7,$day+38,2012));
+echo '<hr/>';
+// php的函数time()专门用于返回当前日期和时间的UNIX时间戳，不需要输入任何参数。
+$t = time();
+echo $t.'<br/>';
+echo date('Y-m-d',$t);
+// 时间戳并非输出后一直保持不变，会随着秒数的增加而改变
+
+// 3. 获取日期和时间的相关信息
+/* 函数getdate()可取得日期和时间的有关信息
+ * array getdate([int $timestamp]);
+ * 该函数的参数是一个UNIX时间戳，可选，若没有给定参数，PHP默认使用当前本地时间。
+ * 函数处理成功后，返回一个关联数组，数组的每个单元存储这日期和时间的相关信息
+ * */
+echo '<br/>';
+echo '<br/>';
+$time = mktime(20,0,0,8,8,2012); // 获取时间戳
+echo '<b>日期：'.date('Y-m-d H:i:s',$time).'</b>';
+echo '<br/>';
+echo '<pre>';
+echo '该日期相关信息如下：';
+echo '<br/>';
+$date = getdate($time); // 获取时间
+print_r($date);
+echo '</pre>';
+// 改函数返回一个完整的关联数组的索引值信息
+
+// 4. php中的日期计算
+/* 在php中计算 两个日期之间的时间跨度，可通过计算两个日期之间的UNIX时间戳之差实现。
+ * */
+$day =1;
+$month =10;
+$year = 1949;
+
+$national_unix = mktime(0,0,0,$month,$day,$year); // 获取给定时间的时间戳
+$now_unix = time(); // 获取现在的时间戳
+$national_time = $now_unix - $national_unix;
+
+$national_day_year = floor($national_time/365*24*60*60); // 相距的年数
+$national_day_day = floor($national_time/24*60*60); // 相距的天数
+
+echo "今天距新中国成立日1949-10-1已经<b>".$national_day_year."</b>年";
+echo '<hr>';
+echo "今天距新中国成立日1949-10-1已经<b>".$national_day_day."</b>天";
+echo '<br/>';
+echo '<br/>';
+// 该程序通过取历史上某天的UNIX时间戳和当天的时间戳计算他们之间的差值，然后换算成两个时间之跨度的年数和天数
+/* 换算公式：  秒   分    时     日  月  年
+*         1/60/60/24  /365 === 年
+*         1/60/60/24       === 天
+*         当从小单位到大单位进行换算时，以大的单位等于多少个小单位为换算的跨度值
+*/
+
+// 5. 检查日期的有效性
+/* checkdate()用于验证日期是否有效
+ * bool checkdate(int $month, int $day, int $year);
+ * 函数检查由参数构成的日期，若日期有效，返回true，繁殖返回false
+ * 第一个参数表示月份，取值范围 1-12；第二个参数是日期，取值范围在$month所具有的有效天数之内，且闰年已考虑；
+ * 第三个参数是年份，取值范围1-32767
+ * */
+if(checkdate(7, 22, 1985)){ // 验证指定的日期
+	echo '7,22,1985:'.'这是一个正确的日期格式';
+}else{
+	echo '这不是一个正确的日期格式';
+}
+echo '<br/>';
+echo '<hr>';
+echo '<br/>';
+if(checkdate(9, 99, 1999)){ // 验证指定的日期
+	echo '这是一个正确的日期格式';
+}else{
+	echo '9,99,1999：'.'这不是一个正确的日期格式';
+}
+
+// 7. 使用php制作万年历
+/* 使用php生成万年历，主要使用date()，mktime()函数
+ * date()函数，用于格式化时间和取得当前时间信息
+ * mktime()函数用于取得请求的时间段的时间戳
+ * checkdate()函数，用于检查参数运算的年、月、日是否合法
+ * */
+

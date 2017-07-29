@@ -1,0 +1,25 @@
+<?php 
+/* 将字符串的最后两项转换成数组
+ * 运用str_split(string $str [, int $split_length])
+ * */
+$week1 = "Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday";
+$str = array_splice(explode(",", $week1), -2);
+echo '<pre>';
+print_r($str);
+echo '</pre>'; // 有问题！报一个strict standards错误
+echo '<br/>';
+?>
+
+<?php 
+$week2 ="Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday";
+$str = explode(",", $week2);
+echo "<br/>";
+echo '<pre>';
+print_r($str);
+echo '</pre>';
+echo '<br/>';
+$array = array_splice($str, -2,3);
+echo '<pre>';
+print_r($array);
+echo '</pre>';
+?>

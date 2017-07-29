@@ -1,0 +1,232 @@
+<?php
+// php中对URL、HTTP的处理
+// 对URL的处理主要涉及 URL的编码、解码、对URL进行处理
+/* （1）. URL地址分析
+ *  有时需将一个URL作为一个整体，通过另一个URL传递给一个程序，即将一个URL作为参数传递给另外一个URL
+ *  因为被传递URL里可能带有查询字符串，为避免和原URL的参数冲突，需要将被传递的URL进行处理，即做编码
+ *  对于中文参数值的传递也应该进行URL编码
+ * */
+/* （2）. 对URL进行编码
+ * string urlencode(string $str);
+ * 函数urlencode()接受一个字符串参数作为输入，返回值也是一个字符串，返回值字符串中的所有非字母和数字字符变成一个百分号（%）和一个两位的十六进制数
+ * & 会变成 %26 空格会被转换成一个 + 号 但该函数不对- _ .转换
+ * */
+ $url = "http://localhost.com/?user=abcd&code=1234"; // 定义url变量
+ $decode_url = urlencode($url); // 对url进行编码
+ echo "编码前，URL为：".$url."<br/>";
+ echo "<br/>";
+ echo "编码后，URL为：".$decode_url."<br/>";
+ echo "<br/>";
+ /* （3）. 对 URL进行解码
+  * string urldecode(string $str);
+  * urldecode()的参数是一个字符串，此函数将编码后诸如%##形式的字符串解码
+  * */
+ 
+ $url_encode= "http%3A%2F%2Flocalhost.com%2F%3Fuser%3Dabcd%26code%3D1234"; // 编码后的url
+ $url_str = urldecode($url_encode);
+ echo "解码前，URL为：".$url_encode."<br/>";
+ echo "解码后，URL为:".$url_str."<br/>";
+ 
+ /* （4）. 对URL地址进行分析
+  * 一个有效的URL地址由多个部分组成 协议部分、主机（IP地址）部分、端口号
+  * 有时在程序中需要使用URL地址的某些部分，单纯通过字符串处理函数也可以获取这些部分，但效率低出错高
+  * parse_url()，专门用来分析一个有效的URL地址，该函数可获取URL地址的各个部分
+  * parse_url( $url);
+  * 该函数的参数是一个URL地址字符串，返回值是一个关联数组，数组中存储了URL地址的各个部分
+  * 关联数组的每个索引对应URL地址的每个部分
+  * scheme:协议
+  * host:主机IP地址或域名
+  * port:端口号
+  * user：用户名
+  * pass：用户密码
+  * path：访问路径
+  * query：查询参数字符串
+  * fragment:参数片段
+  * */
+ $url = "http://www.somesite.com:8000/php/code?id=100&cid=900"; // url变量
+ $ret_arr = parse_url($url); // 分析指定的url
+ echo "要分析的地址：<br/>".$url;
+ echo '<hr>';
+ echo "<pre>";
+ echo "分析结果如下：<br/>";
+ print_r($ret_arr);
+ echo "</pre>";
+ 
+ // parse_url()不能用来验证URl地址是否合法，而只是分解URL地址的各个部分 对于不完整的URL,parse_url()会尝试正确解析；对于不合格的URL，函数返回false
+
+ // 2. HTTP应用
+ /* （1）.生成一个HTTP头
+  * 服务器在将HTMl文档传送至客户端之前，会先发送一些数据的说明信息到浏览器，最后发送HTML文档数据，这些说明信息被称作头标
+  * 函数header()会将HTML文档的表头以HTTP协议发送至浏览器，告诉浏览器改如何处理这个页面
+  * header (string $str_header);
+  * 参数$str_header是一个字符串，用来接受要发送的标头
+  * php中函数header()最常见的用法就是重定向 将用户的访问重定向到Php官网
+  * */
+
+//  header("location: http://www.php.net"); // 重定向页面
+//  exit;
+
+ // 打开该网页时，网页自动跳转到header规定的网址
+ // 若限制某一页面不能被用户访问，可用代码设置页面状态为404
+ // 单独在一个页面里设置
+ 
+//  header('HTTP/1.1 404 Not Found');  // 找不到网页的提示信息
+//  header("status: 404 Not Found");
+
+ // 通过函数header()获取页面最新内容
+ // 告诉浏览器此页面的过期事件（国际标准时间表示），只要是已经过去的日期即可
+/* header("Expires: Mon,26 Jul 1970 05:00:00 GMT");
+ // 告诉浏览器此页面的最后更新日期（国际标准时间表示）也就是当天，目的就是强迫浏览器获取最新内容
+ header("Last-Modified:".gmdate("D,d M Y H:i:s")."GMT");
+ header("Cache-Control: no-cache, must-revalidate"); // 告诉浏览器不要使用缓存
+ // 与以前的服务器兼容，兼容HTTP1.0协议
+ header("Pragma:no-cache");
+ header("Content-type: application/file"); // 输出MIME类型
+ header("Content-Length:2850");            // 文件长度
+ header("Accept-Ranges:bytes");
+ header("Contant_Disposition:attachment; filename=afilename"); // 默认时文件保存对话框中的文件名称
+*/
+ // 以上代码也存在问题
+ 
+ /* 在PHP中，向浏览器传送HTML文档前，需要传完所有头标。即函数header()必须在有任何实际输出之前调用，包括输出普通的HTML、空行或PhP代码
+  * */
+ /*	<html>
+ 	<?php 
+ 	header('Location: http://www.example.com);
+ 	?>
+ 	错误代码示范，因为在调用header()之前已输出了HTML标记<html>
+  * */
+ /* （2）. 获取HTTP头信息
+  * 通过HTTP预定义变量$_SERVER可获取页面的HTTP头信息 该变量是一个关联数组，每个索引对应一个HTTP头信息
+  * HTTP_HOST:HTTP主机
+  * SERVER_SIGNATURE: 服务器签名
+  * SERVER_NAME:服务器名称
+  * SERVER_ADDR:服务器地址
+  * SERVER_PROT:服务器端口
+  * SERVER_PROTOCAL:服务器协议
+  * */
+ echo "<pre>";
+ print_r($_SERVER); // 输出由$_SERVER保存的头信息数组
+ echo "</pre>";
+ 
+ /* （3）. 在php中生成cookie
+  * cookie是存放在客户端的一组数据，由服务器端的脚本程序生成、读写，并以文件的形式存放在远程客户端，主要用来识别用户身份
+  * php中的session也通过cookie来区分不同的用户，它可以为每一个用户在服务器端建立一个临时的数据通道，通过这个通道，服务器实现了对不同用户的区分或验证了不同用户的身份
+  * 在设计用户身份验证的系统中，都会使用cookie
+  **/
+ /* （1）. 生成cookie
+  *  setcookie();
+  *  由于cookie是HTTP头标部分的内容，所以必须在输出任何数据之前调用setcookie()，该限制和header()类似
+  *  bool setcookie(string name [, string value [, int expire [, string path [, string domain [, bool secure]]]]])
+  *  setcookie有6个参数：
+  *  name:cookie的名称
+  *  value：cookie的值，保存在客户端，不要保存敏感或机密的数据 当该参数为空，表示撤销客户端中该cookie的资料
+  *  expire： cookie有效的截止时间，即过期时间，该参数必须是整形
+  *  path：cookie有效路径
+  *  domain：cookie有效域名
+  *  secure： 在https的安全传输时才有效
+  *  函数除了第一个参数外，其他参数可选  注意：参数在客户端生成
+  * */
+ // 使用setcookie()给一个cookie设定的值只能是数字或字符串，不能是数组或其他复杂的数据结构
+ /* （2）. 获取cookie
+  * 当cookie设置后，可通过php预定义变量 $_COOKIE来获取cookie 不过只能在其他页面使用这个变量来获取设置过的cookie，
+  * 因为php中被设置的cookie并不会在本页生效，除非该页面被刷新
+  * 之所以要刷新页面后才能看到cookie的值，是因为cookie的值不会在调用setcookie()后立即出现在变量$_COOKIE中，
+  * 而是在客户端再次请求该页面时，cookie随请求一起发送至服务器，此时cookie才能存入到变量$_COOKIE中
+  * */
+ 
+ // 以下生成数组cookie，这样可设置多个cookie，并将其作为数组单元 提取cookie时，所有值都放在一个数组中
+ // 设置多个cookie，存放在数组mycookie中
+ setcookie("mycookie['three']","cookiethree"); // 设置mycookie['three']
+ setcookie("mycookie['two']","cookietwo"); // 设置mycookie['two']
+ setcookie("mycookie['one']","cookieone"); // 设置mycookie['one']
+ // 刷新页面后，将所有cookie显示出来
+ if(isset($_COOKIE["mycookie"])){
+ 	foreach ($_COOKIE['mycookie'] as $name => $value){
+ 		echo "$name : $value <br/>";
+ 	}
+ }
+ 
+ /* （3）. 设置cookie的有效期
+  * cookie有生命周期，即cookie只在一段时间内是有效的。当用户退出浏览器时，cookie会被删除
+  * 若希望延长或缩短cookie有效期，可向函数setcookie()传递第三个参数来设置cookie的有效期
+  * */
+ setcookie('cookie_one','i_am_cookie1',time() + 60*60); // 设置cookie1小时候失效
+ setcookie('cookie_two','i_am_cookie2',time() +60*60*24); // 设置cookie1天后失效
+ // 设置cookie于2012年1月1号中午12点失效
+ setcookie('cookie_three','i_am_cookie3',mktime(12,0,0,1,1,2012));
+ // 用来接收cookie失效时间的第三个参数是UNIX时间戳，即一个秒数
+ // 若未指定cookie的失效时间，或指定为0，cookie将在会话结束时失效，通常是关闭浏览器后失效
+ setcookie('mycookie','delicious',0); // 失效时间为0，即使用默认的失效时间
+
+ /* （4）. 解决cookie的失效问题
+  * cookie失效主要有两种原因：一，用户关闭了浏览器对cookie的支持 二，浏览器本身不支持cookie技术
+  * 当网站中使用了cookie，也必须使用cookie才能运行时，可以检查当前浏览器是否支持cookie或开启cookie后再根据检查情况运行下一步
+  * */
+ 
+ // 1.使用JS检查浏览器是否开启cookie支持
+ ?>
+ <script type="text/javascript">
+ // 检查浏览器是否开启cookie
+ if(window.navigator.cookieEnabled == false){
+	// 显示检查信息
+		alert("请打开浏览器的cookie支持，再浏览本页");
+		// 导航至其他页面
+		window.navigate('notcookie.htm');
+ }else{
+// 		alert("已开启cookie支持");
+	 }
+ </script>
+ <?php 
+ 	// 2.使用php检查浏览器是否开启cookie支持
+ 	// 注册一个cookie值
+ 	setcookie('test','data');
+ 	// 读取已经设置的cookie值
+ 	if($_COOKIE['test']!= 'data'){
+ 		// 若不能读取或读取的cookie值与设置的值不同，显示提示信息，中断脚本
+ 		echo "请打开浏览器的cookie支持，再浏览本页！";
+ 		exit();
+ 	}else{
+ 		echo "ok";
+ 	}
+ 	
+ 	/* (5). 设置cookie的有效路径
+ 	 * 通常客户端的cookie只会回送给那些和设置这个cookie程序在同一目录（或下级目录）的页面.
+ 	 * 如，一个由http：//www.somesite.com/index.php设置的cookie，会被所有到www.somesite.com的请求回送至服务器
+ 	 * 因为index.php在服务器的根目录下
+ 	 * 而由http"//www.somesite.com/users/list.php设置的cookie随着请求，客户端的cookie会被回送到users目录下的其他页面，
+ 	 * 如可将cookie回送到http://www.somesite.com/users/login.php，但不能回送至http://www.somesite.com/orders/info.php
+ 	 * 因为两者不在同一个目录
+ 	 * 若需要客户端的请求把cookie传回到不同的路径下，可通过向函数setcookie()传入第4个参数，通过该参数设置cookie在服务器端的有效路径
+ 	 * 最灵活的方式是设置cookie的有效路径为/,表示用setcookie()设置的cookie在整个服务器域名内有效；
+ 	 * 若设置为/mypath/，那么该cookie只在域名的/mypath目录及其子目录下有效
+ 	 * */
+ 	setcookie('mycookie','delicious',0,'/ck_path');
+ 	echo '<br/>';
+ 	// 这样设置后，当请求/ck_pat/目录下的页面或程序时，该cookie会被从客户端传回，而当请求/ot_path/时，该cookie不会从客户端传回至服务器
+ 	
+ 	/* （6）. 删除cookie
+ 	 * cookie在使用完之后，为了安全考虑，需要删除cookie值
+ 	 * php中没有专门用于删除cookie的函数，但可使用setcookie()和setrawcookie()函数把已知cookie的值设置为空，达到删除的效果
+ 	 * 再就是使用删除数组单元的方法删除cookie
+ 	 * */
+ 	// 使用不同方法设置cookie
+ 	setcookie('name','小王');
+ 	setrawcookie('sex','男');
+ 	$_COOKIE["age"] = 18;
+ 	setcookie('school','大学');
+ 	// 使用不同方法删除cookie
+ 	setcookie('name',''); // 使用setcookie()函数删除cookie
+ 	setrawcookie('sex',''); // 使用setcookie()函数删除cookie
+ 	$_COOKIE["age"] = '';
+ 	unset($_COOKIE["school"]);
+ 	// 遍历$_COOKIE
+ 	foreach ($_COOKIE as $key => $value){
+ 		echo "$key => $value<br/>";
+ 	}
+ 	/* 上述代码使用了如下所述4种方法删除cookie
+ 	 * 使用setcookie()和setrawcookie()函数设置为空值的cookie，其在$_COOKIE里的单元也会被删除
+ 	 * 使用unset()函数删除cookie，与使用函数删除的效果一样
+ 	 * 使用$_COOKIE["age"]="";房市，只删除了cookie的值，但是其在$_COOKIE中单元的键名依然存在
+ 	 * */
+ ?>

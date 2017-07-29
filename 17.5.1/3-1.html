@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<form action="3-3.php" method="post" name="form1">
+    <label for="user_name">输入姓名：</label> <br/> <br/>
+    <input type="text" name="user_name" id="user_name"/> <br/><br/>
+    <label for="male">输入性别：</label>
+    <input type="radio" name="gender" value="male" id="male"/> 男
+    <input type="radio" name="gender" value="female" id="female"/> 女 <br/><br/>
+    <label for="habit">兴趣与爱好:</label>
+    <div id="habit">
+    <input type="checkbox" name="hobby[]" value="reading"/> 阅读
+    <input type="checkbox" name="hobby[]" value="travel"/>  旅游
+    <input type="checkbox" name="hobby[]" value="sport"/>  运动
+    <input type="checkbox" name="hobby[]" value="internet"/> 上网<br/><br/>
+    </div>
+    <label for="occup">选择职业：</label>
+    <select name="occup" id="occup">
+        <option value="engineering">工程师</option>
+        <option value="teacher">教师</option>
+        <option value="docter">医生</option>
+        <option value="other">其他</option>
+    </select> <br/><br/>
+    <input type="submit" value="提交"/>
+</form>
+</body>
+</html>

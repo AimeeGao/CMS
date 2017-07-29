@@ -1,0 +1,13 @@
+<?php
+$host = 'localhost';
+$user_name = 'root';
+$password = 1346;
+
+// 通过POST方法传入的表单数据
+$name = $_POST['user_name'];
+$city = $_POST['city'];
+
+if(empty($name) || trim($name) == ''){ // 判断用户名是否为空或者空格
+	echo '请填写用户名！<a href="14-9e.html">返回</a>';
+	exit;
+}

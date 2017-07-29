@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>3-8.html用户登陆</title>
+    <style type="text/css">
+        .tbl{
+            font-size: 10pt;
+            width: 30%;
+            text-align: right;
+            background-color: #abcdef;
+        }
+    </style>
+    <script type="application/javascript">
+        function check_name(){
+            if(login.user_name.value == "")
+            {
+                alert("请填写用户名！");
+                return false;
+            }
+        }
+    </script>
+</head>
+
+
+<body>
+<!-- 注意： 这里要添加onsubmit属性，通过它，当submit按钮被单击时，js函数check_name被调用-->
+<form name = "login" action="3-10.php" method="post" onsubmit="check_name()">
+    <table width="200px" border="0" align="center">
+        <tr>
+            <td class="tbl">用户名：</td>
+            <td>
+                <input type="text" name="user_name"/>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="登入系统"/></td>
+
+        </tr>
+    </table>
+</form>
+</body>
+</html>
